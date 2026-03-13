@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #3b1d5c; /* สีม่วงเข้มตามภาพ */
+            --bg-color: #3b1d5c;
             --text-color: #ffffff;
         }
         body {
@@ -21,24 +21,23 @@
         }
         .container {
             width: 100%;
-            max-width: 600px; /* ขนาดจำลองหน้าจอมือถือ/แท็บเล็ต */
+            max-width: 600px;
             padding: 20px;
             box-sizing: border-box;
         }
-        /* ส่วนหัวและรูปภาพ */
         .header-image {
             width: 100%;
             height: auto;
             border-radius: 8px;
             margin-bottom: 20px;
-            border: 2px solid #8fc97a; /* กรอบสีเขียวอ่อนตามภาพ */
+            border: 2px solid #8fc97a;
         }
         h2 {
             text-align: center;
             font-size: 1.2rem;
             margin-bottom: 30px;
+            line-height: 1.5;
         }
-        /* ตารางรายชื่อผู้บริจาค */
         .list-container {
             display: flex;
             flex-direction: column;
@@ -56,8 +55,6 @@
         .list-item .amount {
             text-align: right;
         }
-
-        /* ปุ่มและส่วนของแอดมิน */
         .admin-toggle-btn {
             display: block;
             width: 100%;
@@ -68,9 +65,10 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-family: 'Sarabun', sans-serif;
         }
         .admin-panel {
-            display: none; /* ซ่อนไว้ก่อน */
+            display: none;
             background-color: #f4f4f4;
             color: #333;
             padding: 15px;
@@ -100,18 +98,22 @@
             padding: 10px;
             border-radius: 4px;
             cursor: pointer;
+            font-family: 'Sarabun', sans-serif;
         }
         .admin-list-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             background: white;
             padding: 10px;
             margin-bottom: 5px;
             border-radius: 4px;
             font-size: 0.8rem;
+            border: 1px solid #ddd;
         }
-        .btn-edit { background-color: #ffc107; border: none; padding: 5px; cursor: pointer;}
-        .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px; cursor: pointer;}
+        .btn-edit { background-color: #ffc107; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-family: 'Sarabun', sans-serif;}
+        .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-family: 'Sarabun', sans-serif;}
+        .action-btns { display: flex; gap: 5px; }
     </style>
 </head>
 <body>
@@ -121,8 +123,7 @@
     
     <h2>รายนามเจ้าภาพไทยธรรมถวายพระสงฆ์ทรงสมณศักดิ์</h2>
 
-    <div class="list-container" id="public-list">
-        </div>
+    <div class="list-container" id="public-list"></div>
 
     <button class="admin-toggle-btn" onclick="toggleAdmin()">เข้าสู่โหมดจัดการแอดมิน</button>
 
@@ -137,13 +138,11 @@
 
         <hr>
         <h3>แก้ไข/ลบ รายชื่อ</h3>
-        <div id="admin-list">
-            </div>
+        <div id="admin-list"></div>
     </div>
 </div>
 
 <script>
-    // ข้อมูลเริ่มต้นจำลอง (อ้างอิงจากรูปของคุณ)
     let defaultData = [
         { id: 1, name: "พระมหาฉัตรชัย ชยญาณเมธี", title: "รองเจ้าคณะอำเภอนากลาง", amount: 3000 },
         { id: 2, name: "พระครูสุตเมธาวัฒน์", title: "เจ้าคณะตำบลหนองภัยศูนย์", amount: 3000 },
@@ -151,22 +150,18 @@
         { id: 4, name: "พระมหาจักรภัทร คมฺภีรญาณเมธี", title: "วัดประสานศรัทธา", amount: 3000 }
     ];
 
-    // โหลดข้อมูลจาก LocalStorage หรือใช้ค่า default ถ้ายังไม่มี
     let donors = JSON.parse(localStorage.getItem('donorsData')) || defaultData;
 
-    // ฟังก์ชันสำหรับบันทึกข้อมูล
     function saveData() {
         localStorage.setItem('donorsData', JSON.stringify(donors));
         renderList();
     }
 
-    // ฟังก์ชันแปลงตัวเลขเป็นตัวเลขไทย (อุปกรณ์เสริมเพื่อให้เหมือนต้นฉบับเป๊ะๆ)
     function toThaiNum(num) {
         const thaiNumbers = ['๐', '๑', '๒', '๓', '๔', '๕', '๖', '๗', '๘', '๙'];
         return num.toString().replace(/\d/g, (d) => thaiNumbers[d]);
     }
 
-    // ฟังก์ชันแสดงผลรายชื่อหน้าสาธารณะ
     function renderList() {
         const publicList = document.getElementById('public-list');
         const adminList = document.getElementById('admin-list');
@@ -175,9 +170,8 @@
         adminList.innerHTML = '';
 
         donors.forEach((donor, index) => {
-            // Render หน้า Public
             const numThai = toThaiNum(index + 1);
-            const amountStr = donor.amount.toLocaleString(); // ใส่คอมม่าให้ตัวเลข
+            const amountStr = donor.amount.toLocaleString();
             
             publicList.innerHTML += `
                 <div class="list-item">
@@ -189,14 +183,13 @@
                 </div>
             `;
 
-            // Render หน้า Admin
             adminList.innerHTML += `
                 <div class="admin-list-item">
                     <div>
                         <strong>${donor.name}</strong><br>
                         <small>${donor.title} | ${amountStr} บาท</small>
                     </div>
-                    <div>
+                    <div class="action-btns">
                         <button class="btn-edit" onclick="editEntry(${donor.id})">แก้ไข</button>
                         <button class="btn-delete" onclick="deleteEntry(${donor.id})">ลบ</button>
                     </div>
@@ -205,21 +198,21 @@
         });
     }
 
-    // ฟังก์ชันเปิด/ปิดหน้าต่างแอดมิน
     function toggleAdmin() {
         const panel = document.getElementById('admin-panel');
         if (panel.style.display === 'none' || panel.style.display === '') {
-            // แนะนำว่าของจริงควรมี Prompt ถามรหัสผ่านตรงนี้
-            // let password = prompt("ใส่รหัสผ่านแอดมิน:"); 
-            // if(password === "1234") { panel.style.display = 'block'; }
-            panel.style.display = 'block';
-            window.scrollTo(0, document.body.scrollHeight);
+            let password = prompt("กรุณาใส่รหัสผ่านเพื่อเข้าสู่โหมดแอดมิน:");
+            if (password === "25982599") {
+                panel.style.display = 'block';
+                window.scrollTo(0, document.body.scrollHeight);
+            } else if (password !== null) {
+                alert("รหัสผ่านไม่ถูกต้องครับ");
+            }
         } else {
             panel.style.display = 'none';
         }
     }
 
-    // ฟังก์ชันเพิ่มข้อมูล
     function addEntry() {
         const name = document.getElementById('input-name').value;
         const title = document.getElementById('input-title').value;
@@ -238,7 +231,6 @@
             amount: parseInt(amount)
         });
 
-        // ล้างช่องกรอกข้อมูล
         document.getElementById('input-name').value = '';
         document.getElementById('input-title').value = '';
         document.getElementById('input-amount').value = '';
@@ -246,7 +238,6 @@
         saveData();
     }
 
-    // ฟังก์ชันลบข้อมูล
     function deleteEntry(id) {
         if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายชื่อนี้?')) {
             donors = donors.filter(donor => donor.id !== id);
@@ -254,23 +245,26 @@
         }
     }
 
-    // ฟังก์ชันแก้ไขข้อมูลเบื้องต้น
     function editEntry(id) {
         const donor = donors.find(d => d.id === id);
         if (donor) {
             const newName = prompt('แก้ไขชื่อ:', donor.name);
-            const newTitle = prompt('แก้ไขตำแหน่ง:', donor.title);
-            const newAmount = prompt('แก้ไขจำนวนเงิน:', donor.amount);
+            if (newName === null) return; 
+            
+            const newTitle = prompt('แก้ไขตำแหน่ง/วัด:', donor.title);
+            if (newTitle === null) return;
 
-            if (newName !== null) donor.name = newName;
-            if (newTitle !== null) donor.title = newTitle;
-            if (newAmount !== null && !isNaN(newAmount)) donor.amount = parseInt(newAmount);
+            const newAmount = prompt('แก้ไขจำนวนเงิน:', donor.amount);
+            if (newAmount === null) return;
+
+            if (newName.trim() !== '') donor.name = newName;
+            donor.title = newTitle; 
+            if (newAmount !== '' && !isNaN(newAmount)) donor.amount = parseInt(newAmount);
 
             saveData();
         }
     }
 
-    // รันการแสดงผลครั้งแรก
     renderList();
 </script>
 
