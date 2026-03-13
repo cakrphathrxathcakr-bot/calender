@@ -5,125 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายนามเจ้าภาพ</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+    
     <style>
-        :root {
-            --bg-color: #3b1d5c;
-            --text-color: #ffffff;
-        }
-        body {
-            font-family: 'Sarabun', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .header-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 2px solid #8fc97a;
-        }
-        h2 {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        .list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .list-item {
-            display: grid;
-            grid-template-columns: 20px 2fr 1.5fr 70px 30px;
-            gap: 10px;
-            align-items: center;
-            font-size: 0.9rem;
-            border-bottom: 1px dashed rgba(255,255,255,0.2);
-            padding-bottom: 10px;
-        }
-        .list-item .amount {
-            text-align: right;
-        }
-        .admin-toggle-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 40px;
-            background-color: #5a3286;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Sarabun', sans-serif;
-        }
-        .admin-panel {
-            display: none;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .admin-panel h3 {
-            margin-top: 0;
-            text-align: center;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .input-group input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: 'Sarabun', sans-serif;
-        }
-        .btn-add {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Sarabun', sans-serif;
-        }
-        .admin-list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 10px;
-            margin-bottom: 5px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            border: 1px solid #ddd;
-        }
+        :root { --bg-color: #3b1d5c; --text-color: #ffffff; }
+        body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; padding: 20px; box-sizing: border-box; }
+        .header-image { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; border: 2px solid #8fc97a; }
+        h2 { text-align: center; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5; }
+        .list-container { display: flex; flex-direction: column; gap: 15px; min-height: 100px;}
+        .list-item { display: grid; grid-template-columns: 20px 2fr 1.5fr 70px 30px; gap: 10px; align-items: center; font-size: 0.9rem; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 10px; }
+        .list-item .amount { text-align: right; }
+        
+        .admin-toggle-btn { display: block; width: 100%; padding: 10px; margin-top: 40px; background-color: #5a3286; color: white; border: none; border-radius: 5px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 1rem; }
+        .admin-panel { display: none; background-color: #f4f4f4; color: #333; padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .admin-panel h3 { margin-top: 0; text-align: center; color: #333; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Sarabun', sans-serif; }
+        .btn-add { background-color: #28a745; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 1rem; }
+        
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; margin-bottom: 5px; border-radius: 4px; font-size: 0.8rem; border: 1px solid #ddd; color: #333; }
         .btn-edit { background-color: #ffc107; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-family: 'Sarabun', sans-serif;}
         .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-family: 'Sarabun', sans-serif;}
-        .action-btns { display: flex; gap: 5px; }
+        .loading-text { text-align: center; color: #8fc97a; font-size: 1rem; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://via.placeholder.com/600x400/3b1d5c/ffffff?text=พื้นที่ใส่รูปภาพโปสเตอร์งาน" alt="Poster" class="header-image">
+    <img src="https://via.placeholder.com/600x400/3b1d5c/ffffff?text=พื้นที่ใส่รูปภาพโปสเตอร์งาน" class="header-image">
     
     <h2>รายนามเจ้าภาพไทยธรรมถวายพระสงฆ์ทรงสมณศักดิ์</h2>
-
-    <div class="list-container" id="public-list"></div>
+    
+    <div class="list-container" id="public-list">
+        <div class="loading-text">กำลังโหลดรายชื่อ...</div>
+    </div>
 
     <button class="admin-toggle-btn" onclick="toggleAdmin()">เข้าสู่โหมดจัดการแอดมิน</button>
 
@@ -131,141 +49,160 @@
         <h3>เพิ่มรายชื่อใหม่</h3>
         <div class="input-group">
             <input type="text" id="input-name" placeholder="ชื่อ / สมณศักดิ์">
-            <input type="text" id="input-title" placeholder="ตำแหน่ง / วัด">
+            <input type="text" id="input-title" placeholder="ตำแหน่ง / วัด (ถ้ามี)">
             <input type="number" id="input-amount" placeholder="จำนวนเงิน (บาท)">
-            <button class="btn-add" onclick="addEntry()">เพิ่มรายชื่อ</button>
+            <button class="btn-add" onclick="addEntry()">บันทึกรายชื่อ</button>
         </div>
-
         <hr>
-        <h3>แก้ไข/ลบ รายชื่อ</h3>
+        <h3>แก้ไข / ลบ รายชื่อ</h3>
         <div id="admin-list"></div>
     </div>
 </div>
 
 <script>
-    let defaultData = [
-        { id: 1, name: "พระมหาฉัตรชัย ชยญาณเมธี", title: "รองเจ้าคณะอำเภอนากลาง", amount: 3000 },
-        { id: 2, name: "พระครูสุตเมธาวัฒน์", title: "เจ้าคณะตำบลหนองภัยศูนย์", amount: 3000 },
-        { id: 3, name: "พระมหาชินดนัย ฐิตวุฑฺฒิเมธี", title: "เลขานุการเจ้าคณะตำบลกุดดินจี่ เขต ๒", amount: 3000 },
-        { id: 4, name: "พระมหาจักรภัทร คมฺภีรญาณเมธี", title: "วัดประสานศรัทธา", amount: 3000 }
-    ];
+    // 🔑 ลูกกุญแจตู้เซฟของคุณ
+    const firebaseConfig = {
+      apiKey: "AIzaSyDmWsfBchXydatQuIqK8esih4nn3T-i4l8",
+      authDomain: "potae-38bc6.firebaseapp.com",
+      databaseURL: "https://potae-38bc6-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "potae-38bc6",
+      storageBucket: "potae-38bc6.firebasestorage.app",
+      messagingSenderId: "935738834503",
+      appId: "1:935738834503:web:887b8728eb81551acffb62"
+    };
 
-    let donors = JSON.parse(localStorage.getItem('donorsData')) || defaultData;
+    // เปิดใช้งานระบบ Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const donorsRef = db.ref('donors'); // สร้างแฟ้มชื่อ donors
 
-    function saveData() {
-        localStorage.setItem('donorsData', JSON.stringify(donors));
-        renderList();
-    }
+    let donorsData = [];
 
+    // ฟังก์ชันแปลงเลขเป็นเลขไทย
     function toThaiNum(num) {
         const thaiNumbers = ['๐', '๑', '๒', '๓', '๔', '๕', '๖', '๗', '๘', '๙'];
         return num.toString().replace(/\d/g, (d) => thaiNumbers[d]);
     }
 
+    // 📡 ระบบเรียลไทม์: ฟังชั่นนี้จะทำงานอัตโนมัติทันทีที่มีคนเพิ่ม/ลบ/แก้ข้อมูล
+    donorsRef.on('value', (snapshot) => {
+        donorsData = [];
+        snapshot.forEach((childSnapshot) => {
+            donorsData.push({
+                key: childSnapshot.key, // เก็บรหัสอ้างอิงของแต่ละรายการ
+                ...childSnapshot.val()
+            });
+        });
+        renderList(); // เรียกคำสั่งแสดงผลขึ้นหน้าจอ
+    });
+
+    // แสดงผลข้อมูลลงในหน้าเว็บ
     function renderList() {
         const publicList = document.getElementById('public-list');
         const adminList = document.getElementById('admin-list');
         
-        publicList.innerHTML = '';
+        publicList.innerHTML = ''; 
         adminList.innerHTML = '';
 
-        donors.forEach((donor, index) => {
+        if(donorsData.length === 0) {
+            publicList.innerHTML = '<div class="loading-text">ยังไม่มีรายนามเจ้าภาพ</div>';
+            adminList.innerHTML = '<div style="text-align:center;">ยังไม่มีข้อมูล</div>';
+            return;
+        }
+
+        donorsData.forEach((donor, index) => {
             const numThai = toThaiNum(index + 1);
-            const amountStr = donor.amount.toLocaleString();
+            const amountStr = Number(donor.amount).toLocaleString(); // ใส่ลูกน้ำหลักพัน
             
+            // หน้าสำหรับคนทั่วไป
             publicList.innerHTML += `
                 <div class="list-item">
                     <div>${numThai}</div>
                     <div>${donor.name}</div>
-                    <div>${donor.title}</div>
+                    <div>${donor.title || ''}</div>
                     <div class="amount">${amountStr}</div>
                     <div>บาท</div>
-                </div>
-            `;
+                </div>`;
 
+            // หน้าสำหรับแอดมินจัดการ
             adminList.innerHTML += `
                 <div class="admin-list-item">
                     <div>
                         <strong>${donor.name}</strong><br>
-                        <small>${donor.title} | ${amountStr} บาท</small>
+                        <small>${donor.title || '-'} | ${amountStr} บาท</small>
                     </div>
-                    <div class="action-btns">
-                        <button class="btn-edit" onclick="editEntry(${donor.id})">แก้ไข</button>
-                        <button class="btn-delete" onclick="deleteEntry(${donor.id})">ลบ</button>
+                    <div>
+                        <button class="btn-edit" onclick="editEntry('${donor.key}', '${donor.name}', '${donor.title || ''}', ${donor.amount})">แก้ไข</button>
+                        <button class="btn-delete" onclick="deleteEntry('${donor.key}')">ลบ</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
     }
 
+    // ระบบตรวจสอบรหัสผ่านแอดมิน
     function toggleAdmin() {
         const panel = document.getElementById('admin-panel');
         if (panel.style.display === 'none' || panel.style.display === '') {
             let password = prompt("กรุณาใส่รหัสผ่านเพื่อเข้าสู่โหมดแอดมิน:");
-            if (password === "25982599") {
+            if (password === "25982599") { // รหัสผ่านของคุณ
                 panel.style.display = 'block';
-                window.scrollTo(0, document.body.scrollHeight);
-            } else if (password !== null) {
-                alert("รหัสผ่านไม่ถูกต้องครับ");
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            } else if (password !== null) { 
+                alert("รหัสผ่านไม่ถูกต้องครับ"); 
             }
-        } else {
-            panel.style.display = 'none';
+        } else { 
+            panel.style.display = 'none'; 
         }
     }
 
+    // [แอดมิน] เพิ่มข้อมูลส่งเข้าตู้เซฟ
     function addEntry() {
         const name = document.getElementById('input-name').value;
         const title = document.getElementById('input-title').value;
         const amount = document.getElementById('input-amount').value;
-
-        if (!name || !amount) {
-            alert('กรุณากรอกชื่อและจำนวนเงิน');
-            return;
+        
+        if (!name || !amount) { 
+            alert('กรุณากรอกชื่อและจำนวนเงินให้ครบถ้วนครับ'); 
+            return; 
         }
-
-        const newId = donors.length > 0 ? Math.max(...donors.map(d => d.id)) + 1 : 1;
-        donors.push({
-            id: newId,
+        
+        // ส่งข้อมูลเข้า Firebase ทันที
+        donorsRef.push({
             name: name,
-            title: title || '',
+            title: title,
             amount: parseInt(amount)
         });
-
+        
+        // ล้างช่องกรอก
         document.getElementById('input-name').value = '';
         document.getElementById('input-title').value = '';
         document.getElementById('input-amount').value = '';
-
-        saveData();
     }
 
-    function deleteEntry(id) {
+    // [แอดมิน] ลบข้อมูลออกจากตู้เซฟ
+    function deleteEntry(key) {
         if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายชื่อนี้?')) {
-            donors = donors.filter(donor => donor.id !== id);
-            saveData();
+            db.ref('donors/' + key).remove();
         }
     }
 
-    function editEntry(id) {
-        const donor = donors.find(d => d.id === id);
-        if (donor) {
-            const newName = prompt('แก้ไขชื่อ:', donor.name);
-            if (newName === null) return; 
-            
-            const newTitle = prompt('แก้ไขตำแหน่ง/วัด:', donor.title);
-            if (newTitle === null) return;
-
-            const newAmount = prompt('แก้ไขจำนวนเงิน:', donor.amount);
-            if (newAmount === null) return;
-
-            if (newName.trim() !== '') donor.name = newName;
-            donor.title = newTitle; 
-            if (newAmount !== '' && !isNaN(newAmount)) donor.amount = parseInt(newAmount);
-
-            saveData();
-        }
+    // [แอดมิน] แก้ไขข้อมูลในตู้เซฟ
+    function editEntry(key, oldName, oldTitle, oldAmount) {
+        const newName = prompt('แก้ไขชื่อ:', oldName); 
+        if (newName === null) return; 
+        
+        const newTitle = prompt('แก้ไขตำแหน่ง/วัด:', oldTitle); 
+        if (newTitle === null) return;
+        
+        const newAmount = prompt('แก้ไขจำนวนเงิน:', oldAmount); 
+        if (newAmount === null) return;
+        
+        db.ref('donors/' + key).update({
+            name: newName.trim() !== '' ? newName : oldName,
+            title: newTitle,
+            amount: newAmount !== '' && !isNaN(newAmount) ? parseInt(newAmount) : oldAmount
+        });
     }
-
-    renderList();
 </script>
 
 </body>
