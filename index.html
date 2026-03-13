@@ -3,44 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายนามเจ้าภาพ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    <title>รายนามเจ้าภาพ | พระเทพวัชรวิสุทธิ์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
     
     <style>
-        :root { --bg-color: #3b1d5c; --text-color: #ffffff; }
-        body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 600px; padding: 20px; box-sizing: border-box; }
-        .header-image { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; border: 2px solid #8fc97a; }
-        h2 { text-align: center; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5; }
-        .list-container { display: flex; flex-direction: column; gap: 15px; min-height: 100px;}
-        .list-item { display: grid; grid-template-columns: 20px 2fr 1.5fr 70px 30px; gap: 10px; align-items: center; font-size: 0.9rem; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 10px; }
-        .list-item .amount { text-align: right; }
-        
-        .admin-toggle-btn { display: block; width: 100%; padding: 10px; margin-top: 40px; background-color: #5a3286; color: white; border: none; border-radius: 5px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 1rem; }
-        .admin-panel { display: none; background-color: #f4f4f4; color: #333; padding: 15px; border-radius: 8px; margin-top: 20px; }
-        .admin-panel h3 { margin-top: 0; text-align: center; color: #333; }
-        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Sarabun', sans-serif; }
-        .btn-add { background-color: #28a745; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 1rem; }
-        
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; margin-bottom: 5px; border-radius: 4px; font-size: 0.8rem; border: 1px solid #ddd; color: #333; }
-        .btn-edit { background-color: #ffc107; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-family: 'Sarabun', sans-serif;}
-        .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-family: 'Sarabun', sans-serif;}
-        .loading-text { text-align: center; color: #8fc97a; font-size: 1rem; margin-top: 20px; }
+        :root {
+            --bg-color-top: #4A148C; /* สีม่วงเข้มด้านบน */
+            --bg-color-bottom: #311B92; /* สีม่วงเข้มด้านล่าง */
+            --text-color: #ffffff; /* สีข้อความขาว */
+            --accent-color: #FFD700; /* สีทอง */
+            --card-bg: rgba(255, 255, 255, 0.1); /* สีพื้นหลังการ์ดโปร่งแสง */
+            --border-color: rgba(143, 201, 122, 0.3); /* สีขอบเขียวอ่อนจาง */
+            --admin-panel-bg: #f9f9f9; /* สีพื้นหลังแผงแอดมิน */
+            --admin-text: #333333; /* สีข้อความแผงแอดมิน */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(180deg, var(--bg-color-top) 0%, var(--bg-color-bottom) 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            align-self: center;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.4rem;
+            margin: 0;
+            line-height: 1.6;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 150px;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: #8fc97a;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        .list-card {
+            display: grid;
+            grid-template-columns: 30px 1fr 1fr 100px;
+            gap: 15px;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .list-card .number {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .list-card .name {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .list-card .title {
+            font-size: 0.9rem;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        .list-card .amount-section {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .list-card .amount {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .list-card .currency {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .summary-card {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .summary-card .title {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .summary-card .total {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .admin-toggle-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #6a1b9a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .admin-toggle-btn:hover {
+            background-color: #8e24aa;
+        }
+
+        .admin-panel {
+            display: none;
+            background-color: var(--admin-panel-bg);
+            color: var(--admin-text);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .admin-panel h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--admin-text);
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .admin-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border: 1px solid #ddd;
+            color: var(--admin-text);
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Sarabun', sans-serif;
+            margin-left: 5px;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Sarabun', sans-serif;
+            margin-left: 5px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 10px 0;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://via.placeholder.com/600x400/3b1d5c/ffffff?text=พื้นที่ใส่รูปภาพโปสเตอร์งาน" class="header-image">
+    <img src="image_5.png" class="header-image" alt="Poster | พระเทพวัชรวิสุทธิ์">
     
     <h2>รายนามเจ้าภาพไทยธรรมถวายพระสงฆ์ทรงสมณศักดิ์</h2>
     
     <div class="list-container" id="public-list">
-        <div class="loading-text">กำลังโหลดรายชื่อ...</div>
+        <div class="loading-text">กำลังโหลดรายนามเจ้าภาพ...</div>
+    </div>
+
+    <div class="summary-card" id="summary-section">
+        <div class="title">ยอดรวมเงินบริจาคทั้งหมด</div>
+        <div class="total" id="total-amount">๐ บาท</div>
     </div>
 
     <button class="admin-toggle-btn" onclick="toggleAdmin()">เข้าสู่โหมดจัดการแอดมิน</button>
@@ -54,13 +282,17 @@
             <button class="btn-add" onclick="addEntry()">บันทึกรายชื่อ</button>
         </div>
         <hr>
-        <h3>แก้ไข / ลบ รายชื่อ</h3>
+        <h3>จัดการรายชื่อ</h3>
         <div id="admin-list"></div>
+    </div>
+
+    <div class="footer">
+        ครีเอท โดย พระมหาจักรภัทร คมฺภีรญาณเมธี
     </div>
 </div>
 
 <script>
-    // 🔑 ลูกกุญแจตู้เซฟของคุณ
+    // 🔑 ลูกกุญแจตู้เซฟ Firebase ของคุณ
     const firebaseConfig = {
       apiKey: "AIzaSyDmWsfBchXydatQuIqK8esih4nn3T-i4l8",
       authDomain: "potae-38bc6.firebaseapp.com",
@@ -74,11 +306,11 @@
     // เปิดใช้งานระบบ Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    const donorsRef = db.ref('donors'); // สร้างแฟ้มชื่อ donors
+    const donorsRef = db.ref('donors'); // ชื่อแฟ้ม donors ใน Firebase
 
     let donorsData = [];
 
-    // ฟังก์ชันแปลงเลขเป็นเลขไทย
+    // ฟังก์ชันแปลงเลขให้เป็นเลขไทย
     function toThaiNum(num) {
         const thaiNumbers = ['๐', '๑', '๒', '๓', '๔', '๕', '๖', '๗', '๘', '๙'];
         return num.toString().replace(/\d/g, (d) => thaiNumbers[d]);
@@ -87,12 +319,22 @@
     // 📡 ระบบเรียลไทม์: ฟังชั่นนี้จะทำงานอัตโนมัติทันทีที่มีคนเพิ่ม/ลบ/แก้ข้อมูล
     donorsRef.on('value', (snapshot) => {
         donorsData = [];
+        let totalAmount = 0;
+
         snapshot.forEach((childSnapshot) => {
             donorsData.push({
-                key: childSnapshot.key, // เก็บรหัสอ้างอิงของแต่ละรายการ
+                key: childSnapshot.key, // เก็บรหัสอ้างอิงของ Firebase
                 ...childSnapshot.val()
             });
+            totalAmount += Number(childSnapshot.val().amount);
         });
+
+        // 🌟 จัดเรียงข้อมูลตามจำนวนเงิน (มากไปน้อย)
+        donorsData.sort((a, b) => b.amount - a.amount);
+
+        // อัปเดตยอดรวม
+        document.getElementById('total-amount').innerText = `${toThaiNum(totalAmount.toLocaleString())} บาท`;
+
         renderList(); // เรียกคำสั่งแสดงผลขึ้นหน้าจอ
     });
 
@@ -112,16 +354,21 @@
 
         donorsData.forEach((donor, index) => {
             const numThai = toThaiNum(index + 1);
-            const amountStr = Number(donor.amount).toLocaleString(); // ใส่ลูกน้ำหลักพัน
+            const amountStrThai = toThaiNum(Number(donor.amount).toLocaleString()); // ใส่ลูกน้ำหลักพันแบบเลขไทย
             
-            // หน้าสำหรับคนทั่วไป
+            // หน้าสำหรับคนทั่วไป (List Card)
             publicList.innerHTML += `
-                <div class="list-item">
-                    <div>${numThai}</div>
-                    <div>${donor.name}</div>
-                    <div>${donor.title || ''}</div>
-                    <div class="amount">${amountStr}</div>
-                    <div>บาท</div>
+                <div class="list-card">
+                    <div class="number">${numThai}</div>
+                    <div>
+                        <div class="name">${donor.name}</div>
+                        <div class="title">${donor.title || ''}</div>
+                    </div>
+                    <div class="title"></div>
+                    <div class="amount-section">
+                        <div class="amount">${amountStrThai}</div>
+                        <div class="currency">บาท</div>
+                    </div>
                 </div>`;
 
             // หน้าสำหรับแอดมินจัดการ
@@ -129,7 +376,7 @@
                 <div class="admin-list-item">
                     <div>
                         <strong>${donor.name}</strong><br>
-                        <small>${donor.title || '-'} | ${amountStr} บาท</small>
+                        <small>${donor.title || '-'} | ${toThaiNum(Number(donor.amount).toLocaleString())} บาท</small>
                     </div>
                     <div>
                         <button class="btn-edit" onclick="editEntry('${donor.key}', '${donor.name}', '${donor.title || ''}', ${donor.amount})">แก้ไข</button>
@@ -146,7 +393,8 @@
             let password = prompt("กรุณาใส่รหัสผ่านเพื่อเข้าสู่โหมดแอดมิน:");
             if (password === "25982599") { // รหัสผ่านของคุณ
                 panel.style.display = 'block';
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                // เลื่อนหน้าจอลงไปที่แผงแอดมินอย่างนุ่มนวล
+                panel.scrollIntoView({ behavior: 'smooth' });
             } else if (password !== null) { 
                 alert("รหัสผ่านไม่ถูกต้องครับ"); 
             }
@@ -173,7 +421,7 @@
             amount: parseInt(amount)
         });
         
-        // ล้างช่องกรอก
+        // ล้างช่องกรอกข้อมูล
         document.getElementById('input-name').value = '';
         document.getElementById('input-title').value = '';
         document.getElementById('input-amount').value = '';
