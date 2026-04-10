@@ -2,15 +2,16 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>ศาสนกิจ พระมหาฉัตรชัย ชยญาณเมธี</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #5D4037;    /* สีน้ำตาลเข้ม */
-            --secondary: #8D6E63;  /* สีน้ำตาลอ่อน */
-            --accent: #D4AF37;     /* สีทองเมทัลลิก */
-            --bg: #FDFBF7;         /* สีพื้นหลังครีมขาว */
+            --primary: #5D4037;    
+            --secondary: #8D6E63;  
+            --accent: #D4AF37;     
+            --holiday: #D32F2F;    
+            --bg: #FDFBF7;         
             --text-dark: #202020;
             --border: #E0E0E0;
         }
@@ -18,109 +19,139 @@
         * { box-sizing: border-box; }
 
         body { 
-            font-family: 'Sarabun', sans-serif; 
-            background-color: var(--bg); 
-            margin: 0; 
-            padding: 0; 
-            color: var(--text-dark); 
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            font-family: 'Sarabun', sans-serif; background-color: var(--bg); margin: 0; padding: 0; 
+            color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        /* ส่วนหัว */
+        /* --- ส่วนหัว --- */
         header { 
-            background: linear-gradient(135deg, var(--primary) 0%, #3E2723 100%); 
-            color: white; 
-            text-align: center; 
-            padding: 3rem 1rem 2.5rem; 
-            border-bottom: 6px solid var(--accent); 
+            background: linear-gradient(135deg, var(--primary) 0%, #3E2723 100%); color: white; 
+            text-align: center; padding: 3rem 1rem 2.5rem; border-bottom: 6px solid var(--accent); 
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
-        
         .header-title { font-size: 2.2rem; font-weight: 700; margin: 0; color: var(--accent); text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
         .header-subtitle { font-size: 1.4rem; font-weight: 600; margin: 10px 0 5px 0; }
         .header-position { font-size: 1.1rem; font-weight: 300; opacity: 0.9; margin: 0; }
 
-        .container { 
-            flex-grow: 1;
-            width: 100%;
-            max-width: 1000px; 
-            margin: 30px auto; 
-            padding: 0 15px; 
-        }
+        .container { flex-grow: 1; width: 100%; max-width: 1000px; margin: 30px auto; padding: 0 15px; }
 
         .section-title { 
-            font-size: 1.5rem; 
-            font-weight: 700; 
-            color: var(--primary); 
-            margin: 0 0 20px 0; 
-            display: flex; 
-            align-items: center; 
+            font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 0 0 20px 0; display: flex; align-items: center; 
         }
         .section-title::before {
             content: ''; display: inline-block; width: 6px; height: 28px; background: var(--accent); margin-right: 12px; border-radius: 3px;
         }
 
-        /* ดีไซน์ตาราง (Table) */
-        .table-wrapper {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-            overflow-x: auto; /* ให้เลื่อนซ้ายขวาได้บนมือถือ */
-            border: 1px solid var(--border);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            min-width: 600px; /* บังคับความกว้างขั้นต่ำไม่ให้ตารางบีบเกินไป */
-        }
-
-        thead {
-            background-color: var(--secondary);
-            color: white;
-        }
-
-        th {
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        td {
+        /* --------------------------------------------------- */
+        /* ★ โครงสร้างรายการงานใหม่ (ไม่ใช้ Table แล้ว) ★ */
+        /* --------------------------------------------------- */
+        .schedule-wrapper { margin-bottom: 50px; }
+        
+        .schedule-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 3fr 2.5fr; /* สัดส่วนความกว้าง 4 คอลัมน์บนคอม */
+            gap: 15px;
             padding: 15px 20px;
             border-bottom: 1px solid var(--border);
-            font-size: 1.1rem;
-            vertical-align: top;
+            background: white;
+            align-items: start;
+        }
+        
+        .schedule-header {
+            background-color: var(--secondary);
+            color: white;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+            border-bottom: none;
+        }
+        
+        .schedule-row:not(.schedule-header):hover { background-color: #F9F6F0; }
+        .schedule-row:last-child { border-radius: 0 0 12px 12px; border-bottom: none; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+        .schedule-row.single-item { border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); border-bottom: none;} /* กรณีมีแค่งานเดียว */
+
+        .col-date { font-weight: 600; color: var(--primary); font-size: 1.1rem; }
+        .col-time { font-weight: bold; font-size: 1.1rem; }
+        .col-title { font-weight: 600; font-size: 1.1rem; line-height: 1.4; }
+        .col-location { color: #666; font-size: 1rem; line-height: 1.4; }
+        .status-now { display: inline-block; background: #E8F5E9; color: #2E7D32; padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; margin-top: 5px; }
+
+        /* --- ปรับแต่งสำหรับมือถือ (Mobile Responsive) --- */
+        @media (max-width: 768px) {
+            .header-title { font-size: 1.8rem; }
+            .header-subtitle { font-size: 1.2rem; }
+            
+            .schedule-header { display: none; } /* ซ่อนหัวตารางบนมือถือ */
+            
+            .schedule-wrapper { box-shadow: none; }
+            .schedule-row {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 15px;
+                border-radius: 12px !important;
+                border: 1px solid var(--border);
+                border-left: 6px solid var(--accent);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+                padding: 15px;
+            }
+
+            .col-date { font-size: 0.95rem; color: #666; border-bottom: 1px dashed #ddd; padding-bottom: 8px; width: 100%; }
+            .col-time { font-size: 1.1rem; color: var(--primary); }
+            .col-title { font-size: 1.2rem; color: #333; margin-top: 5px; }
+            .col-location { font-size: 0.95rem; color: #888; }
+            
+            /* ปรับขนาดปฏิทินให้พอดีมือถือ */
+            .cal-cell { min-height: 45px; padding: 5px 2px; }
+            .cal-date-num { font-size: 1rem; }
+            .cal-day-name { font-size: 0.85rem; padding: 5px 0; }
+            .cal-month-year { font-size: 1.2rem; }
+            .cal-header { margin-bottom: 15px; }
         }
 
-        tbody tr:hover { background-color: #F9F6F0; }
-        tbody tr:last-child td { border-bottom: none; }
+        /* --- ระบบปฏิทิน --- */
+        .calendar-section { background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); padding: 20px; border-top: 6px solid var(--primary); }
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cal-btn { background: #f1ede4; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; color: var(--primary); transition: background 0.2s; }
+        .cal-btn:hover { background: var(--accent); color: white; }
+        .cal-month-year { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
 
-        /* การเน้นข้อมูล */
-        .col-date { width: 25%; font-weight: 600; color: var(--primary); }
-        .col-time { width: 15%; font-weight: bold; }
-        .col-title { width: 35%; font-weight: 600; }
-        .col-location { width: 25%; color: #666; font-size: 1rem; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .cal-day-name { font-weight: 600; color: var(--secondary); padding: 10px 0; font-size: 0.9rem; }
+        
+        .cal-cell { padding: 8px 5px; border-radius: 8px; cursor: pointer; position: relative; min-height: 55px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; transition: all 0.2s; border: 1px solid transparent; }
+        .cal-cell:hover { background: #FDF6E3; }
+        .cal-cell.empty { background: transparent; cursor: default; }
+        
+        .cal-date-num { font-size: 1.1rem; font-weight: 600; color: #333; z-index: 2; margin-bottom: 2px; }
+        .cal-cell.today { background: #f0f0f0; border: 1px solid var(--border); }
+        .cal-cell.today .cal-date-num { color: var(--primary); }
+        .cal-cell.selected { background: var(--primary); border: 1px solid var(--primary); transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .cal-cell.selected .cal-date-num { color: white; }
 
-        .status-now {
-            display: inline-block;
-            background: #E8F5E9; color: #2E7D32; 
-            padding: 3px 10px; border-radius: 12px; 
-            font-size: 0.85rem; font-weight: bold; 
-            margin-top: 5px;
-        }
+        .dot-group { display: flex; gap: 4px; justify-content: center; align-items: center; }
+        .event-dot { width: 6px; height: 6px; background-color: var(--accent); border-radius: 50%; }
+        .holiday-dot { width: 6px; height: 6px; background-color: var(--holiday); border-radius: 50%; }
+        .cal-cell.selected .event-dot, .cal-cell.selected .holiday-dot { background-color: white; }
 
-        /* ส่วนท้าย */
-        footer {
-            background-color: #f1ede4; color: #666; text-align: center;
-            padding: 25px 15px; margin-top: 40px; font-size: 0.95rem; border-top: 1px solid #e0dcd2;
-        }
+        .cal-legend { display: flex; justify-content: center; gap: 15px; margin-top: 15px; font-size: 0.85rem; color: #666; padding-top: 15px; border-top: 1px dashed #eee; }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+
+        /* รายละเอียดงานที่ถูกกด */
+        .day-details-box { margin-top: 20px; padding: 20px; background: #FDFBF7; border-radius: 12px; border: 1px solid var(--border); border-left: 5px solid var(--accent); display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .day-details-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 10px;}
+        .holiday-banner { background: #FFEBEE; color: #C62828; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-weight: 600; font-size: 1.05rem; display: flex; align-items: center; border-left: 4px solid #C62828; }
+        .wanphra-banner { background: #F3E5F5; color: #6A1B9A; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-weight: 600; font-size: 1.05rem; display: flex; align-items: center; border-left: 4px solid #9C27B0; }
+        .detail-item { margin-bottom: 15px; padding-left: 10px; border-left: 3px solid var(--accent); }
+        .detail-item:last-child { margin-bottom: 0; }
+        .detail-time { font-weight: 600; color: var(--primary); font-size: 1.05rem; }
+        .detail-title { font-size: 1.15rem; color: #333; margin: 3px 0; font-weight: 600; }
+        .detail-loc { font-size: 0.9rem; color: #777; }
+        .empty-day { color: #888; font-style: italic; text-align: center; padding: 10px; }
+
+        footer { background-color: #f1ede4; color: #666; text-align: center; padding: 25px 15px; margin-top: 40px; font-size: 0.95rem; border-top: 1px solid #e0dcd2; }
         .credit { font-weight: 700; color: var(--primary); margin-top: 10px; font-size: 1.1rem; }
-
-        .status-message { text-align: center; padding: 40px; font-size: 1.2rem; color: var(--secondary); }
     </style>
 </head>
 <body>
@@ -132,25 +163,45 @@
 </header>
 
 <div class="container">
+    
     <div class="section-title">ตารางงานที่กำลังจะถึง</div>
     
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>วัน/เดือน/ปี</th>
-                    <th>เวลา</th>
-                    <th>ศาสนกิจ</th>
-                    <th>สถานที่</th>
-                </tr>
-            </thead>
-            <tbody id="schedule-body">
-                <tr>
-                    <td colspan="4" class="status-message">⏳ กำลังโหลดข้อมูล...</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="schedule-wrapper" id="schedule-list">
+        <div class="schedule-row single-item" style="justify-content: center; text-align: center; color: #666; padding: 40px;">
+            ⏳ กำลังโหลดข้อมูล...
+        </div>
     </div>
+
+    <div class="section-title">ตรวจสอบวันว่าง / วันสำคัญ</div>
+    <div class="calendar-section">
+        <div class="cal-header">
+            <button class="cal-btn" onclick="changeMonth(-1)">❮</button>
+            <div class="cal-month-year" id="cal-month-year">เดือน ปี</div>
+            <button class="cal-btn" onclick="changeMonth(1)">❯</button>
+        </div>
+        
+        <div class="cal-grid">
+            <div class="cal-day-name" style="color:#D32F2F;">อา.</div>
+            <div class="cal-day-name">จ.</div>
+            <div class="cal-day-name">อ.</div>
+            <div class="cal-day-name">พ.</div>
+            <div class="cal-day-name">พฤ.</div>
+            <div class="cal-day-name">ศ.</div>
+            <div class="cal-day-name">ส.</div>
+        </div>
+        <div class="cal-grid" id="calendar-grid"></div>
+
+        <div class="cal-legend">
+            <div class="legend-item"><div class="event-dot"></div> ศาสนกิจ</div>
+            <div class="legend-item"><div class="holiday-dot"></div> วันสำคัญ</div>
+        </div>
+
+        <div class="day-details-box" id="day-details-box">
+            <div class="day-details-title" id="day-details-title">รายละเอียดงาน</div>
+            <div id="day-details-content"></div>
+        </div>
+    </div>
+
 </div>
 
 <footer>
@@ -159,71 +210,221 @@
 </footer>
 
 <script>
-    // --- ใส่ API Key และ Calendar ID ให้เรียบร้อยแล้ว ---
     const API_KEY = 'AIzaSyDMFzZarwGw0uN1uDl91zx34hJjmVpBITs'; 
     const CALENDAR_ID = 'cakrphathrxathcakr@gmail.com';
+    const HOLIDAY_CALENDAR_ID = 'th.thai#holiday@group.v.calendar.google.com';
 
-    async function loadSchedule() {
-        const tbody = document.getElementById('schedule-body');
-        
-        const now = new Date();
-        const startStr = new Date(now.setHours(0,0,0,0)).toISOString();
-        const endStr = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(); // ดึงล่วงหน้า 30 วัน
+    let allEvents = [];
+    let allHolidays = [];
+    let eventsByDate = {}; 
+    let holidaysByDate = {}; 
+    
+    let currentDate = new Date();
+    let displayMonth = currentDate.getMonth();
+    let displayYear = currentDate.getFullYear();
 
-        const url = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}&timeMin=${startStr}&timeMax=${endStr}&singleEvents=true&orderBy=startTime`;
+    const monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+
+    function formatTime(dateObj, isAllDay) {
+        if (isAllDay) return "ตลอดวัน";
+        return dateObj.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
+    }
+
+    async function fetchCalendarData() {
+        const startStr = new Date(currentDate.getFullYear(), currentDate.getMonth() - 2, 1).toISOString(); 
+        const endStr = new Date(currentDate.getFullYear(), currentDate.getMonth() + 4, 0).toISOString(); 
+
+        const urlUser = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}&timeMin=${startStr}&timeMax=${endStr}&singleEvents=true&orderBy=startTime`;
+        const urlHoliday = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(HOLIDAY_CALENDAR_ID)}/events?key=${API_KEY}&timeMin=${startStr}&timeMax=${endStr}&singleEvents=true&orderBy=startTime`;
 
         try {
-            const response = await fetch(url);
-            const data = await response.json();
+            const [resUser, resHoliday] = await Promise.all([
+                fetch(urlUser), fetch(urlHoliday).catch(() => null)
+            ]);
 
-            if (data.error) throw new Error(data.error.message);
+            const dataUser = await resUser.json();
+            allEvents = dataUser.items || [];
 
-            const validEvents = data.items ? data.items.filter(event => {
-                const endTime = new Date(event.end.dateTime || event.end.date);
-                return event.end.dateTime ? endTime > new Date() : (new Date(event.end.date).getTime() + 86400000 > new Date().getTime());
-            }) : [];
-
-            if (validEvents.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="status-message">ไม่มีกำหนดการศาสนกิจในช่วงนี้</td></tr>';
-                return;
+            if (resHoliday && resHoliday.ok) {
+                const dataHoliday = await resHoliday.json();
+                allHolidays = dataHoliday.items || [];
             }
 
-            tbody.innerHTML = ''; // ล้างข้อความโหลด
-            
-            validEvents.forEach(event => {
-                const start = new Date(event.start.dateTime || event.start.date);
-                const end = new Date(event.end.dateTime || event.end.date);
-                
-                // จัดรูปแบบวันที่
-                const dateLabel = start.toLocaleDateString('th-TH', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-                
-                // จัดรูปแบบเวลา
-                let timeLabel = event.start.dateTime 
-                    ? start.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.' 
-                    : 'ตลอดวัน';
-
-                // เช็คว่ากำลังดำเนินการอยู่ไหม
-                const isNow = (new Date() >= start && new Date() <= end) && event.start.dateTime;
-                const statusHtml = isNow ? `<br><span class="status-now">● ขณะนี้</span>` : '';
-
-                const row = `
-                    <tr>
-                        <td class="col-date">${dateLabel}</td>
-                        <td class="col-time">${timeLabel} ${statusHtml}</td>
-                        <td class="col-title">${event.summary || 'ไม่ได้ระบุชื่องาน'}</td>
-                        <td class="col-location">📍 ${event.location || '-'}</td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
+            eventsByDate = {};
+            allEvents.forEach(event => {
+                const d = new Date(event.start.dateTime || event.start.date);
+                const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                if (!eventsByDate[k]) eventsByDate[k] = [];
+                eventsByDate[k].push(event);
             });
 
+            holidaysByDate = {};
+            allHolidays.forEach(event => {
+                const d = new Date(event.start.dateTime || event.start.date);
+                const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                if (!holidaysByDate[k]) holidaysByDate[k] = [];
+                holidaysByDate[k].push(event);
+            });
+
+            renderScheduleList();
+            renderCalendar();
+
         } catch (err) {
-            tbody.innerHTML = `<tr><td colspan="4" class="status-message" style="color:red;"><b>เกิดข้อผิดพลาด:</b> ${err.message}<br><small>กรุณาตรวจสอบว่าเปิดใช้งาน Google Calendar API แล้ว</small></td></tr>`;
+            document.getElementById('schedule-list').innerHTML = `<div class="schedule-row single-item" style="color:red; justify-content:center; padding:30px;"><b>เกิดข้อผิดพลาด:</b> ${err.message}</div>`;
         }
     }
 
-    loadSchedule();
-    setInterval(loadSchedule, 300000); // อัปเดตทุก 5 นาที
+    // --- ฟังก์ชันเรนเดอร์รายการแบบใหม่ (Div & Grid/Flexbox) ---
+    function renderScheduleList() {
+        const listContainer = document.getElementById('schedule-list');
+        const now = new Date();
+        
+        const upcomingEvents = allEvents.filter(event => {
+            if(event.summary && event.summary.includes('วันพระ') && !event.start.dateTime) return false;
+            const endTime = new Date(event.end.dateTime || event.end.date);
+            return event.end.dateTime ? endTime > now : (new Date(event.end.date).getTime() + 86400000 > now.getTime());
+        }).slice(0, 10);
+
+        if (upcomingEvents.length === 0) {
+            listContainer.innerHTML = '<div class="schedule-row single-item" style="justify-content:center; text-align:center; padding:40px;">ไม่มีกำหนดการศาสนกิจในช่วงนี้</div>';
+            return;
+        }
+
+        // สร้างหัวตาราง (จะแสดงเฉพาะบนคอมพิวเตอร์)
+        let html = `
+            <div class="schedule-row schedule-header">
+                <div class="col-date">วัน/เดือน/ปี</div>
+                <div class="col-time">เวลา</div>
+                <div class="col-title">ศาสนกิจ</div>
+                <div class="col-location">สถานที่</div>
+            </div>
+        `;
+
+        // สร้างรายการงาน
+        upcomingEvents.forEach(event => {
+            const start = new Date(event.start.dateTime || event.start.date);
+            const end = new Date(event.end.dateTime || event.end.date);
+            
+            const dateLabel = start.toLocaleDateString('th-TH', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            const timeLabel = formatTime(start, !event.start.dateTime);
+            
+            const isNow = (new Date() >= start && new Date() <= end) && event.start.dateTime;
+            const statusHtml = isNow ? `<div class="status-now">● ขณะนี้</div>` : '';
+
+            html += `
+                <div class="schedule-row">
+                    <div class="col-date">📅 ${dateLabel}</div>
+                    <div class="col-time">⏰ ${timeLabel} ${statusHtml}</div>
+                    <div class="col-title">${event.summary || 'ไม่ได้ระบุชื่องาน'}</div>
+                    <div class="col-location">📍 ${event.location || 'ไม่ได้ระบุสถานที่'}</div>
+                </div>
+            `;
+        });
+        
+        listContainer.innerHTML = html;
+    }
+
+    function changeMonth(step) {
+        displayMonth += step;
+        if (displayMonth > 11) { displayMonth = 0; displayYear++; }
+        if (displayMonth < 0) { displayMonth = 11; displayYear--; }
+        renderCalendar();
+        document.getElementById('day-details-box').style.display = 'none';
+    }
+
+    function renderCalendar() {
+        document.getElementById('cal-month-year').innerText = `${monthNames[displayMonth]} ${displayYear + 543}`;
+        const grid = document.getElementById('calendar-grid');
+        grid.innerHTML = '';
+
+        const firstDay = new Date(displayYear, displayMonth, 1).getDay();
+        const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+        const today = new Date();
+        const isCurrentMonth = (today.getMonth() === displayMonth && today.getFullYear() === displayYear);
+
+        for (let i = 0; i < firstDay; i++) {
+            grid.innerHTML += `<div class="cal-cell empty"></div>`;
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const dateStr = `${displayYear}-${String(displayMonth+1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+            
+            const dayEvents = eventsByDate[dateStr] || [];
+            const dayHolidays = holidaysByDate[dateStr] || [];
+            
+            const hasRealEvent = dayEvents.some(e => !(e.summary && e.summary.includes('วันพระ') && !e.start.dateTime));
+            const isWanPhra = dayEvents.some(e => e.summary && e.summary.includes('วันพระ'));
+            
+            let dotsHtml = '';
+            if (dayHolidays.length > 0 || isWanPhra) dotsHtml += `<div class="holiday-dot"></div>`;
+            if (hasRealEvent) dotsHtml += `<div class="event-dot"></div>`;
+
+            let cellClass = 'cal-cell';
+            if (isCurrentMonth && i === today.getDate()) cellClass += ' today';
+
+            grid.innerHTML += `
+                <div class="${cellClass}" onclick="selectDate('${dateStr}', this, ${i})">
+                    <span class="cal-date-num">${i}</span>
+                    <div class="dot-group">${dotsHtml}</div>
+                </div>
+            `;
+        }
+    }
+
+    function selectDate(dateStr, cellElement, dayNum) {
+        document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('selected'));
+        if(cellElement) cellElement.classList.add('selected');
+
+        const detailsBox = document.getElementById('day-details-box');
+        const detailsTitle = document.getElementById('day-details-title');
+        const detailsContent = document.getElementById('day-details-content');
+
+        const selectedDateObj = new Date(displayYear, displayMonth, dayNum);
+        const niceDateStr = selectedDateObj.toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        detailsTitle.innerText = `กำหนดการ: ${niceDateStr}`;
+
+        const dayEvents = eventsByDate[dateStr] || [];
+        const dayHolidays = holidaysByDate[dateStr] || [];
+        
+        let html = '';
+
+        dayHolidays.forEach(h => {
+            const isBuddhist = h.summary.includes('บูชา') || h.summary.includes('พรรษา');
+            html += `<div class="holiday-banner">${isBuddhist ? '🪷' : '🇹🇭'} ${h.summary}</div>`;
+        });
+
+        const wanPhraEvents = dayEvents.filter(e => e.summary && e.summary.includes('วันพระ'));
+        wanPhraEvents.forEach(wp => {
+            html += `<div class="wanphra-banner">🪷 ${wp.summary}</div>`;
+        });
+
+        const realEvents = dayEvents.filter(e => !(e.summary && e.summary.includes('วันพระ') && !e.start.dateTime));
+        
+        if (dayHolidays.length === 0 && dayEvents.length === 0) {
+            html = `<div class="empty-day">✨ วันนี้ไม่มีกำหนดการศาสนกิจ (ว่าง)</div>`;
+        } else if (realEvents.length > 0) {
+            realEvents.forEach(ev => {
+                const st = new Date(ev.start.dateTime || ev.start.date);
+                const timeStr = formatTime(st, !ev.start.dateTime);
+                html += `
+                    <div class="detail-item">
+                        <div class="detail-time">⏰ ${timeStr}</div>
+                        <div class="detail-title">${ev.summary || 'ไม่ได้ระบุชื่องาน'}</div>
+                        <div class="detail-loc">📍 ${ev.location || 'ในวัด/ไม่ระบุสถานที่'}</div>
+                    </div>
+                `;
+            });
+        }
+
+        detailsContent.innerHTML = html;
+        detailsBox.style.display = 'block';
+        
+        if (window.innerWidth <= 768) {
+            setTimeout(() => { detailsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+        }
+    }
+
+    fetchCalendarData();
 </script>
 
 </body>
