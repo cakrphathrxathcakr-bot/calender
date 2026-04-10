@@ -12,6 +12,7 @@
             --accent: #D4AF37;     /* สีทองเมทัลลิก */
             --bg: #FDFBF7;         /* สีพื้นหลังครีมขาว */
             --text-dark: #202020;
+            --border: #E0E0E0;
         }
 
         * { box-sizing: border-box; }
@@ -27,34 +28,33 @@
             min-height: 100vh;
         }
 
-        /* ส่วนหัว (Header) */
+        /* ส่วนหัว */
         header { 
             background: linear-gradient(135deg, var(--primary) 0%, #3E2723 100%); 
             color: white; 
             text-align: center; 
-            padding: 3.5rem 1rem 3rem; 
+            padding: 3rem 1rem 2.5rem; 
             border-bottom: 6px solid var(--accent); 
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
         
-        .header-title { font-size: 2.4rem; font-weight: 700; margin: 0; color: var(--accent); text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-        .header-subtitle { font-size: 1.5rem; font-weight: 600; margin: 12px 0 5px 0; }
+        .header-title { font-size: 2.2rem; font-weight: 700; margin: 0; color: var(--accent); text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .header-subtitle { font-size: 1.4rem; font-weight: 600; margin: 10px 0 5px 0; }
         .header-position { font-size: 1.1rem; font-weight: 300; opacity: 0.9; margin: 0; }
 
         .container { 
             flex-grow: 1;
             width: 100%;
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 20px 15px; 
+            max-width: 1000px; 
+            margin: 30px auto; 
+            padding: 0 15px; 
         }
 
-        /* หัวข้อแต่ละส่วน */
         .section-title { 
             font-size: 1.5rem; 
             font-weight: 700; 
             color: var(--primary); 
-            margin: 40px 0 15px; 
+            margin: 0 0 20px 0; 
             display: flex; 
             align-items: center; 
         }
@@ -62,65 +62,65 @@
             content: ''; display: inline-block; width: 6px; height: 28px; background: var(--accent); margin-right: 12px; border-radius: 3px;
         }
 
-        /* กล่องใส่ปฏิทิน */
-        .calendar-box {
+        /* ดีไซน์ตาราง (Table) */
+        .table-wrapper {
             background: white;
             border-radius: 12px;
-            padding: 10px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-            border: 1px solid #eee;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .calendar-box:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow-x: auto; /* ให้เลื่อนซ้ายขวาได้บนมือถือ */
+            border: 1px solid var(--border);
         }
 
-        /* เน้นกล่องงานที่กำลังจะถึง */
-        .box-upcoming {
-            border-top: 5px solid var(--accent);
-        }
-        /* เน้นกล่องหน้ารวมงาน */
-        .box-all {
-            border-top: 5px solid var(--secondary);
-        }
-
-        .iframe-container {
-            position: relative;
+        table {
             width: 100%;
-        }
-        
-        .iframe-agenda { height: 400px; } /* ความสูงของรายการงาน */
-        .iframe-month { height: 650px; } /* ความสูงของปฏิทินรวม */
-
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 600px; /* บังคับความกว้างขั้นต่ำไม่ให้ตารางบีบเกินไป */
         }
 
-        /* ส่วนท้าย (Footer) */
+        thead {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        th {
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.1rem;
+            vertical-align: top;
+        }
+
+        tbody tr:hover { background-color: #F9F6F0; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        /* การเน้นข้อมูล */
+        .col-date { width: 25%; font-weight: 600; color: var(--primary); }
+        .col-time { width: 15%; font-weight: bold; }
+        .col-title { width: 35%; font-weight: 600; }
+        .col-location { width: 25%; color: #666; font-size: 1rem; }
+
+        .status-now {
+            display: inline-block;
+            background: #E8F5E9; color: #2E7D32; 
+            padding: 3px 10px; border-radius: 12px; 
+            font-size: 0.85rem; font-weight: bold; 
+            margin-top: 5px;
+        }
+
+        /* ส่วนท้าย */
         footer {
-            background-color: #f1ede4;
-            color: #666;
-            text-align: center;
-            padding: 30px 15px;
-            margin-top: 50px;
-            font-size: 0.95rem;
-            border-top: 1px solid #e0dcd2;
+            background-color: #f1ede4; color: #666; text-align: center;
+            padding: 25px 15px; margin-top: 40px; font-size: 0.95rem; border-top: 1px solid #e0dcd2;
         }
         .credit { font-weight: 700; color: var(--primary); margin-top: 10px; font-size: 1.1rem; }
 
-        @media (max-width: 600px) {
-            .header-title { font-size: 2rem; }
-            .header-subtitle { font-size: 1.3rem; }
-            .iframe-agenda { height: 350px; }
-            .iframe-month { height: 500px; }
-        }
+        .status-message { text-align: center; padding: 40px; font-size: 1.2rem; color: var(--secondary); }
     </style>
 </head>
 <body>
@@ -132,27 +132,99 @@
 </header>
 
 <div class="container">
+    <div class="section-title">ตารางงานที่กำลังจะถึง</div>
     
-    <div class="section-title">งานที่กำลังจะถึง</div>
-    <div class="calendar-box box-upcoming">
-        <div class="iframe-container iframe-agenda">
-            <iframe src="https://calendar.google.com/calendar/embed?src=cakrphathrxathcakr%40gmail.com&ctz=Asia%2FBangkok&mode=AGENDA&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&bgcolor=%23ffffff" frameborder="0" scrolling="yes"></iframe>
-        </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>วัน/เดือน/ปี</th>
+                    <th>เวลา</th>
+                    <th>ศาสนกิจ</th>
+                    <th>สถานที่</th>
+                </tr>
+            </thead>
+            <tbody id="schedule-body">
+                <tr>
+                    <td colspan="4" class="status-message">⏳ กำลังโหลดข้อมูล...</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <div class="section-title">หน้ารวมงานทั้งหมด</div>
-    <div class="calendar-box box-all">
-        <div class="iframe-container iframe-month">
-            <iframe src="https://calendar.google.com/calendar/embed?src=cakrphathrxathcakr%40gmail.com&ctz=Asia%2FBangkok&mode=MONTH&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0&bgcolor=%23ffffff" frameborder="0" scrolling="no"></iframe>
-        </div>
-    </div>
-
 </div>
 
 <footer>
     <div>ระบบตรวจสอบตารางศาสนกิจ (อัปเดตอัตโนมัติ)</div>
     <div class="credit">จัดทำโดย: พระมหาจักรภัทร คมฺภรญาณเมธี</div>
 </footer>
+
+<script>
+    // --- ใส่ API Key และ Calendar ID ให้เรียบร้อยแล้ว ---
+    const API_KEY = 'AIzaSyDMFzZarwGw0uN1uDl91zx34hJjmVpBITs'; 
+    const CALENDAR_ID = 'cakrphathrxathcakr@gmail.com';
+
+    async function loadSchedule() {
+        const tbody = document.getElementById('schedule-body');
+        
+        const now = new Date();
+        const startStr = new Date(now.setHours(0,0,0,0)).toISOString();
+        const endStr = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(); // ดึงล่วงหน้า 30 วัน
+
+        const url = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}&timeMin=${startStr}&timeMax=${endStr}&singleEvents=true&orderBy=startTime`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.error) throw new Error(data.error.message);
+
+            const validEvents = data.items ? data.items.filter(event => {
+                const endTime = new Date(event.end.dateTime || event.end.date);
+                return event.end.dateTime ? endTime > new Date() : (new Date(event.end.date).getTime() + 86400000 > new Date().getTime());
+            }) : [];
+
+            if (validEvents.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="status-message">ไม่มีกำหนดการศาสนกิจในช่วงนี้</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = ''; // ล้างข้อความโหลด
+            
+            validEvents.forEach(event => {
+                const start = new Date(event.start.dateTime || event.start.date);
+                const end = new Date(event.end.dateTime || event.end.date);
+                
+                // จัดรูปแบบวันที่
+                const dateLabel = start.toLocaleDateString('th-TH', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+                
+                // จัดรูปแบบเวลา
+                let timeLabel = event.start.dateTime 
+                    ? start.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.' 
+                    : 'ตลอดวัน';
+
+                // เช็คว่ากำลังดำเนินการอยู่ไหม
+                const isNow = (new Date() >= start && new Date() <= end) && event.start.dateTime;
+                const statusHtml = isNow ? `<br><span class="status-now">● ขณะนี้</span>` : '';
+
+                const row = `
+                    <tr>
+                        <td class="col-date">${dateLabel}</td>
+                        <td class="col-time">${timeLabel} ${statusHtml}</td>
+                        <td class="col-title">${event.summary || 'ไม่ได้ระบุชื่องาน'}</td>
+                        <td class="col-location">📍 ${event.location || '-'}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="4" class="status-message" style="color:red;"><b>เกิดข้อผิดพลาด:</b> ${err.message}<br><small>กรุณาตรวจสอบว่าเปิดใช้งาน Google Calendar API แล้ว</small></td></tr>`;
+        }
+    }
+
+    loadSchedule();
+    setInterval(loadSchedule, 300000); // อัปเดตทุก 5 นาที
+</script>
 
 </body>
 </html>
